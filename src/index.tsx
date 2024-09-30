@@ -17,8 +17,9 @@ const root = createRoot(domNode);
 
 const App = () => {
 	const [articleState, setArticleState] = useState(defaultArticleState);
-	const handleDataReturn = (data: ArticleStateType) => {
-		setArticleState(data);
+
+	const handleDataReturn = (articleState: ArticleStateType) => {
+		setArticleState(articleState);
 	};
 	return (
 		<main

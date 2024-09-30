@@ -12,58 +12,51 @@ import {
 	backgroundColors,
 	contentWidthArr,
 	defaultArticleState,
+	OptionType,
+	ArticleStateType,
 } from 'src/constants/articleProps';
 import { Text } from 'src/ui/text';
 import { Select } from 'src/ui/select';
 import { RadioGroup } from 'src/ui/radio-group';
 import { Separator } from 'src/ui/separator';
 
-export const ArticleParamsForm = ({ onDataReturn }: any) => {
-	const [isOpened, setIsOpened] = useState(false);
+export const ArticleParamsForm = ({
+	onDataReturn,
+}: {
+	onDataReturn: (articleState: ArticleStateType) => void;
+}) => {
+	const [isOpen, setIsOpen] = useState(false);
 	const className = clsx(styles.container, {
-		[styles.container_open]: isOpened,
+		[styles.container_open]: isOpen,
 	});
 
-	const [fontFamily, setFontFamily] = useState(
-		defaultArticleState.fontFamilyOption
-	);
-	const [fontSize, setFontSize] = useState(defaultArticleState.fontSizeOption);
-	const [fontColor, setFontColor] = useState(defaultArticleState.fontColor);
-	const [backgroundColor, setBackgroundColor] = useState(
-		defaultArticleState.backgroundColor
-	);
-	const [contentWidth, setContentWidth] = useState(
-		defaultArticleState.contentWidth
-	);
+	const [articleState, setArticleState] = useState(defaultArticleState);
+
+	const handleChange = (key: string, option: OptionType) => {
+		setArticleState((prevState) => ({
+			...prevState,
+			[key]: option,
+		}));
+	};
 
 	const handleClick = () => {
-		setIsOpened((isOpened) => !isOpened);
+		setIsOpen((isOpen) => !isOpen);
 	};
 
 	const handleSubmit = () => {
-		const newArticleState = {
-			fontFamilyOption: fontFamily,
-			fontSizeOption: fontSize,
-			fontColor: fontColor,
-			backgroundColor: backgroundColor,
-			contentWidth: contentWidth,
-		};
-		onDataReturn(newArticleState);
-		setIsOpened(false);
+		onDataReturn(articleState);
+		setIsOpen(false);
 	};
 
 	const handleReset = () => {
-		setFontFamily(defaultArticleState.fontFamilyOption);
-		setFontSize(defaultArticleState.fontSizeOption);
-		setFontColor(defaultArticleState.fontColor);
-		setBackgroundColor(defaultArticleState.backgroundColor);
-		setContentWidth(defaultArticleState.contentWidth);
+		setArticleState(defaultArticleState);
 		onDataReturn(defaultArticleState);
-		setIsOpened(false);
+		setIsOpen(false);
 	};
+
 	return (
 		<>
-			<ArrowButton isOpen={isOpened} onClick={handleClick} />
+			<ArrowButton isOpen={isOpen} onClick={handleClick} />
 			<aside className={className}>
 				<form className={styles.form} style={{ gap: 50 }}>
 					<Text as='h2' size={31} weight={800} uppercase>
@@ -71,37 +64,37 @@ export const ArticleParamsForm = ({ onDataReturn }: any) => {
 					</Text>
 
 					<Select
-						onChange={(option) => setFontFamily(option)}
+						onChange={(option) => handleChange('fontFamilyOption', option)}
 						title={'Шрифт'}
-						selected={fontFamily}
+						selected={articleState.fontFamilyOption}
 						options={fontFamilyOptions}
 					/>
 
 					<RadioGroup
-						onChange={(option) => setFontSize(option)}
+						onChange={(option) => handleChange('fontSizeOption', option)}
 						name={'radio'}
 						title={'рАЗМЕР шрифта'}
-						selected={fontSize}
+						selected={articleState.fontSizeOption}
 						options={fontSizeOptions}
 					/>
 					<Select
-						onChange={(option) => setFontColor(option)}
+						onChange={(option) => handleChange('fontColor', option)}
 						title={'Цвет шрифта'}
-						selected={fontColor}
+						selected={articleState.fontColor}
 						options={fontColors}
 					/>
 
 					<Separator />
 					<Select
-						onChange={(option) => setBackgroundColor(option)}
+						onChange={(option) => handleChange('backgroundColor', option)}
 						title={'Цвет фона'}
-						selected={backgroundColor}
+						selected={articleState.backgroundColor}
 						options={backgroundColors}
 					/>
 					<Select
-						onChange={(option) => setContentWidth(option)}
+						onChange={(option) => handleChange('contentWidth', option)}
 						title={'Ширина контента'}
-						selected={contentWidth}
+						selected={articleState.contentWidth}
 						options={contentWidthArr}
 					/>
 					<div className={styles.bottomContainer}>
