@@ -45,13 +45,13 @@ export const ArticleParamsForm = ({
 
 	const handleSubmit = () => {
 		onDataReturn(articleState);
-		setIsOpen(false);
+		// setIsOpen(false);
 	};
 
 	const handleReset = () => {
 		setArticleState(defaultArticleState);
 		onDataReturn(defaultArticleState);
-		setIsOpen(false);
+		// setIsOpen(false);
 	};
 
 	return (
